@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "http-server -c-1 .output/public",
     "build": "nuxt generate",
     "dev": "nuxt dev",
     "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.1.1",
