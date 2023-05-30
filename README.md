@@ -1,42 +1,25 @@
-# Nuxt 3 Minimal Starter
+# P4 - What might this be? 🐶
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
-
+## Build it!
 ```bash
-# yarn
-yarn install
+# If you're using NVM
+nvm use 18
 
-# npm
+# Install all the dependencies
 npm install
 
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
+# Build the "app"
 npm run build
 ```
 
-Locally preview production build:
-
+## Tweak it!
 ```bash
-npm run preview
-```
+# If you're using NVM
+nvm use 18
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+# Install all the dependencies
+npm install
+
+# Develop / add your memes!
+npm run dev
+```
