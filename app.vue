@@ -1,86 +1,41 @@
 <script setup lang="ts">
-import { TransitionPresets, useTransition } from '@vueuse/core';
-const {
-  isScanning,
-  scanRSSI,
-  requestScan,
-  cancelScan
-} = useBluetooth();
+import LandingPage from './components/LandingPage.vue';
+import PartyIntro from './components/PartyIntro.vue';
+import PartyPup from './components/PartyPup.vue';
 
-const pup = ref<{
-  playbackRate: number
-  play: Function
-  pause: Function
-}>({ playbackRate: 1, play: () => {}, pause: () => {} });
+const activePage = shallowRef(LandingPage);
 
-const speed = computed({
-  get() {
-    return pup.value.playbackRate;
-  },
-  set(rate) {
-    if (rate <= 0.7) {
-      pup.value.playbackRate = 0.7;
-      pup.value.pause();
-    } else {
-      pup.value.playbackRate = rate;
-      pup.value.play();
-    }
-  }
-});
+function launchApp() {
+  activePage.value = PartyIntro;
 
-const speedProxy = ref(0);
-const easedSpeed = useTransition(speedProxy, {
-  duration: 2000,
-  transition: TransitionPresets.easeOutSine,
-});
-
-const isPartying = computed(() => scanRSSI.value >= -60);
-watch(isPartying, () => {
-  speedProxy.value = isPartying.value ? 2 : 0;
-});
-watch(easedSpeed, value => speed.value = value);
-
-onMounted(() => {
-  speed.value = 0;
-});
+  setTimeout(() => {
+    activePage.value = PartyPup;
+  }, 7000);
+}
 </script>
 
 <template>
-  <main class="flex flex-col gap-10 h-screen w-screen justify-center items-center">
-    <video
-      ref="pup"
-      class="w-70 h-70"
-      autoplay
-      loop>
-      <source
-        src="/img/pup.webm"
-        type="video/webm">
-    </video>
-
-    <input
-      :value="easedSpeed"
-      disabled
-      type="range"
-      step="0.01"
-      min="0.7"
-      max="2">
-
-    <pre>{{ { scanRSSI, speed, easedSpeed, speedProxy } }}</pre>
-
-    <div class="flex flex-row gap-5">
-      <button
-        v-if="!isScanning"
-        @click="requestScan">
-        Request Scan
-      </button>
-      <button
-        v-else
-        @click="() => cancelScan()">
-        Cancel Scan
-      </button>
-      <button @click="pup.play()">
-        Force play
-      </button>
-    </div>
-  </main>
+  <transition
+    name="slide-fade"
+    mode="out-in">
+    <component
+      :is="activePage"
+      @launch="launchApp" />
+  </transition>
 </template>
+
+<style lang="scss">
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+</style>

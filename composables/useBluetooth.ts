@@ -41,7 +41,7 @@ const scanMonitor: { retries: number, start: Function, kill: Function, handlerID
       console.log('[useBluetooth] Is scan still active:', scan.active);
       scanMonitor.retries++;
 
-      if (scanMonitor.retries >= 40) {
+      if (scanMonitor.retries >= 200) {
         abort(true);
       }
     }, 200);

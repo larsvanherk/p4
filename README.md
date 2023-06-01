@@ -1,5 +1,9 @@
 # P4 - What might this be? 🐶
 
+> ***DISCLAIMER***: This repo is a shitpost!  
+> Code quality is a direct representation of my exhausted midnight memery.  
+> We're just having some fun with the Web Bluetooth LE API 😉
+
 ## Build it!
 ```bash
 # If you're using NVM
