@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TransitionPresets, useTransition } from '@vueuse/core';
 const {
   isScanning,
   scanRSSI,
@@ -27,11 +28,17 @@ const speed = computed({
   }
 });
 
-const isPartying = computed(() => scanRSSI.value >= -60);
-
-watch(isPartying, () => {
-  speed.value = isPartying.value ? 2 : 0;
+const speedProxy = ref(0);
+const easedSpeed = useTransition(speedProxy, {
+  duration: 2000,
+  transition: TransitionPresets.easeOutSine,
 });
+
+const isPartying = computed(() => scanRSSI.value >= -60);
+watch(isPartying, () => {
+  speedProxy.value = isPartying.value ? 2 : 0;
+});
+watch(easedSpeed, value => speed.value = value);
 
 onMounted(() => {
   speed.value = 0;
@@ -51,13 +58,14 @@ onMounted(() => {
     </video>
 
     <input
-      v-model="speed"
+      :value="easedSpeed"
+      disabled
       type="range"
       step="0.01"
       min="0.7"
       max="2">
 
-    <pre>{{ { scanRSSI, isPartying } }}</pre>
+    <pre>{{ { scanRSSI, speed, easedSpeed, speedProxy } }}</pre>
 
     <div class="flex flex-row gap-5">
       <button
